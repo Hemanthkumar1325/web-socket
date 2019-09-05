@@ -1,0 +1,16 @@
+    func send(_ value: Any, onSuccess: @escaping ()-> Void) {
+
+		guard JSONSerialization.isValidJSONObject(value) else {
+			print("[WEBSOCKET] Value is not a valid JSON object.\n \(value)")
+			return
+		}
+
+		do {
+			let data = try JSONSerialization.data(withJSONObject: value, options: [])
+			socket.write(data: data) {
+				onSuccess()
+			}
+		} catch let error {
+			print("[WEBSOCKET] Error serializing JSON:\n\(error)")
+		}
+	}
